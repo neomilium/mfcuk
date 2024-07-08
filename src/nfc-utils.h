@@ -7,6 +7,7 @@
  * Copyright (C) 2010-2012 Romain Tartière
  * Copyright (C) 2010-2013 Philippe Teuwen
  * Copyright (C) 2012-2013 Ludovic Rousseau
+ * See AUTHORS file for a more comprehensive list of contributors.
  * Additional contributors of this file:
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,8 +42,9 @@
 #ifndef _EXAMPLES_NFC_UTILS_H_
 #  define _EXAMPLES_NFC_UTILS_H_
 
+#  include <stdio.h>
+#  include <stdint.h>
 #  include <stdlib.h>
-#  include <string.h>
 #  include <err.h>
 
 /**
@@ -92,12 +94,8 @@
 #endif
 
 uint8_t  oddparity(const uint8_t bt);
-void    oddparity_bytes_ts(const uint8_t *pbtData, const size_t szLen, uint8_t *pbtPar);
-
 void    print_hex(const uint8_t *pbtData, const size_t szLen);
 void    print_hex_bits(const uint8_t *pbtData, const size_t szBits);
 void    print_hex_par(const uint8_t *pbtData, const size_t szBits, const uint8_t *pbtDataPar);
-
-void    print_nfc_target(const nfc_target *pnt, bool verbose);
 
 #endif

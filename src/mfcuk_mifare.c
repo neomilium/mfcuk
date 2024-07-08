@@ -381,7 +381,7 @@ void print_mifare_classic_tag_keys(const char *title, mifare_classic_tag *tag)
     return;
   }
 
-  bTagType = tag->amb->mbm.btUnknown;
+  bTagType = tag->amb->mbm.btSAK;
 
   if (!IS_MIFARE_CLASSIC_1K(bTagType) && !IS_MIFARE_CLASSIC_4K(bTagType)) {
     return;
@@ -395,7 +395,7 @@ void print_mifare_classic_tag_keys(const char *title, mifare_classic_tag *tag)
   printf("Sector\t|    Key A\t|    AC bits\t|    Key B\n");
   printf("-------------------------------------------------------\n");
 
-  if (IS_MIFARE_CLASSIC_1K(tag->amb->mbm.btUnknown)) {
+  if (IS_MIFARE_CLASSIC_1K(tag->amb->mbm.btSAK)) {
     max_blocks = MIFARE_CLASSIC_1K_MAX_BLOCKS;
   } else {
     max_blocks = MIFARE_CLASSIC_4K_MAX_BLOCKS;

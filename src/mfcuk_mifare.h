@@ -74,9 +74,9 @@
 #define IS_MIFARE_CLASSIC_4K(ats_sak)           ( ((ats_sak) == MIFARE_CLASSIC_4K) || ((ats_sak) == MIFARE_CLASSIC_4K_SKGT) )
 #define IS_MIFARE_DESFIRE(ats_sak)              ( ((ats_sak) == MIFARE_DESFIRE) )
 
-#define IS_MIFARE_CLASSIC_1K_TAG(tag)           IS_MIFARE_CLASSIC_1K(tag->amb[0].mbm.btUnknown)
-#define IS_MIFARE_CLASSIC_4K_TAG(tag)           IS_MIFARE_CLASSIC_4K(tag->amb[0].mbm.btUnknown)
-#define IS_MIFARE_DESFIRE_TAG(tag)              IS_MIFARE_DESFIRE(tag->amb[0].mbm.btUnknown)
+#define IS_MIFARE_CLASSIC_1K_TAG(tag)           IS_MIFARE_CLASSIC_1K(tag->amb[0].mbm.btSAK)
+#define IS_MIFARE_CLASSIC_4K_TAG(tag)           IS_MIFARE_CLASSIC_4K(tag->amb[0].mbm.btSAK)
+#define IS_MIFARE_DESFIRE_TAG(tag)              IS_MIFARE_DESFIRE(tag->amb[0].mbm.btSAK)
 
 #define MIFARE_CLASSIC_BYTES_PER_BLOCK          16 // Common for Mifare Classic 1K and Mifare Classic 4K
 #define MIFARE_CLASSIC_INVALID_BLOCK            0xFFFFFFFF

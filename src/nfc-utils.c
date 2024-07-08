@@ -7,6 +7,7 @@
  * Copyright (C) 2010-2012 Romain Tartière
  * Copyright (C) 2010-2013 Philippe Teuwen
  * Copyright (C) 2012-2013 Ludovic Rousseau
+ * See AUTHORS file for a more comprehensive list of contributors.
  * Additional contributors of this file:
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,8 +37,6 @@
  * @file nfc-utils.c
  * @brief Provide some examples shared functions like print, parity calculation, options parsing.
  */
-#include <nfc/nfc.h>
-#include <err.h>
 
 #include "nfc-utils.h"
 
@@ -45,17 +44,7 @@ uint8_t
 oddparity(const uint8_t bt)
 {
   // cf http://graphics.stanford.edu/~seander/bithacks.html#ParityParallel
-  return (0x9669 >> ((bt ^(bt >> 4)) & 0xF)) & 1;
-}
-
-void
-oddparity_bytes_ts(const uint8_t *pbtData, const size_t szLen, uint8_t *pbtPar)
-{
-  size_t  szByteNr;
-  // Calculate the parity bits for the command
-  for (szByteNr = 0; szByteNr < szLen; szByteNr++) {
-    pbtPar[szByteNr] = oddparity(pbtData[szByteNr]);
-  }
+  return (0x9669 >> ((bt ^ (bt >> 4)) & 0xF)) & 1;
 }
 
 void
@@ -116,13 +105,4 @@ print_hex_par(const uint8_t *pbtData, const size_t szBits, const uint8_t *pbtDat
       printf("%02x (%d bits)", pbtData[szBytes], uRemainder);
   }
   printf("\n");
-}
-
-void
-print_nfc_target(const nfc_target *pnt, bool verbose)
-{
-  char *s;
-  str_nfc_target(&s, pnt, verbose);
-  printf("%s", s);
-  nfc_free(s);
 }

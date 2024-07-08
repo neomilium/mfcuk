@@ -81,14 +81,5 @@ unsigned char hex2bin(unsigned char h, unsigned char l);
  */
 void sleepmillis(unsigned int millis);
 
-/**
- * @fn void clear_screen(void);
- * @brief Clears output console
- *
- * Wrapper for system-dependant clear screen function.
- * Resets output console, clearing text and resetting character pointer.
- */
-void clear_screen(void);
-
 #endif // _MFCUK_UTILS_H_
 
