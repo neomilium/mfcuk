@@ -171,7 +171,6 @@ static inline uint64_t bswap_64(uint64_t x)
 #endif
 
 #include <string.h>
-#include <err.h>
 #include <errno.h>
 
 #include "xgetopt.h"
@@ -192,17 +191,9 @@ static inline uint64_t bswap_64(uint64_t x)
 #include "mfcuk_utils.h"
 #include "mfcuk_finger.h"
 #include "mfcuk.h"
+#include "nfc-utils.h"
 
 #define MAX_FRAME_LEN       264
-
-#ifdef DEBUG
-#  warning Debug mode is enabled
-#  define WARN(...) fprintf(stderr, "%s %d: ", __FILE__, __LINE__ ); warnx ("  WARNING: " __VA_ARGS__ )
-#  define ERR(...)  fprintf(stderr, "%s %d: ", __FILE__, __LINE__ ); warnx ("  ERROR " __VA_ARGS__ )
-#else
-#  define WARN(...) warnx ("WARNING: " __VA_ARGS__ )
-#  define ERR(...)  warnx ("ERROR: " __VA_ARGS__ )
-#endif
 
 static uint32_t bswap_32_pu8(uint8_t *pu8)
 {
@@ -953,10 +944,6 @@ int main(int argc, char *argv[])
 
   // "Sort-of" initializing the entries
   memset((void *)arrSpoofEntries, 0, sizeof(arrSpoofEntries));
-
-  // MAIN ( broken-brain (: ) logic of the tool
-  // ---------------------------------------
-  clear_screen();
 
   print_identification();
 

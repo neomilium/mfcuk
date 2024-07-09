@@ -95,13 +95,3 @@ void sleepmillis(unsigned int millis)
   usleep(millis * 1000);
 #endif
 }
-
-void clear_screen()
-{
-#ifdef WIN32 // On Windows, use "cls" command
-  system("cls");
-#else // Otherwise fall back to TTY control characters
-  printf("\033[1;1H\033[J");
-#endif
-}
-
