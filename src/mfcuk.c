@@ -736,7 +736,7 @@ static void print_mifare_classic_tag_actions(const char *title, mifare_classic_t
     return;
   }
 
-  bTagType = tag->amb->mbm.btUnknown;
+  bTagType = tag->amb->mbm.btSAK;
 
   if (!IS_MIFARE_CLASSIC_1K(bTagType) && !IS_MIFARE_CLASSIC_4K(bTagType)) {
     return;
@@ -750,7 +750,7 @@ static void print_mifare_classic_tag_actions(const char *title, mifare_classic_t
   printf("Sector\t|    Key A\t|ACTS | RESL\t|    Key B\t|ACTS | RESL\n");
   printf("---------------------------------------------------------------------\n");
 
-  if (IS_MIFARE_CLASSIC_1K(tag->amb->mbm.btUnknown)) {
+  if (IS_MIFARE_CLASSIC_1K(tag->amb->mbm.btSAK)) {
     max_blocks = MIFARE_CLASSIC_1K_MAX_BLOCKS;
   } else {
     max_blocks = MIFARE_CLASSIC_4K_MAX_BLOCKS;
@@ -940,7 +940,7 @@ int main(int argc, char *argv[])
   memset(&tag_recover_verify, 0, sizeof(tag_recover_verify));
 
   tag_recover_verify.type = MIFARE_CLASSIC_4K;
-  tag_recover_verify.tag_basic.amb[0].mbm.btUnknown = MIFARE_CLASSIC_4K;
+  tag_recover_verify.tag_basic.amb[0].mbm.btSAK = MIFARE_CLASSIC_4K;
 
   // "Sort-of" initializing the entries
   memset((void *)arrSpoofEntries, 0, sizeof(arrSpoofEntries));
@@ -1026,7 +1026,7 @@ int main(int argc, char *argv[])
           WARN("non-supported tag type value (%s)", optarg);
         } else {
           tag_recover_verify.type = i;
-          tag_recover_verify.tag_basic.amb[0].mbm.btUnknown = i;
+          tag_recover_verify.tag_basic.amb[0].mbm.btSAK = i;
           bfOpts[ch] = true;
         }
         break;
@@ -1410,7 +1410,7 @@ int main(int argc, char *argv[])
       ptr_trailer_dump = (mifare_classic_block_trailer *)((char *)(&dump_loaded_tag.tag_basic) + (0 * MIFARE_CLASSIC_BYTES_PER_BLOCK));
 
       memcpy(ptr_trailer, ptr_trailer_dump, sizeof(*ptr_trailer));
-      tag_recover_verify.type = tag_recover_verify.tag_basic.amb[0].mbm.btUnknown;
+      tag_recover_verify.type = tag_recover_verify.tag_basic.amb[0].mbm.btSAK;
       tag_recover_verify.uid = bswap_32_pu8(tag_recover_verify.tag_basic.amb[0].mbm.abtUID);
     }
   }
@@ -1447,12 +1447,12 @@ int main(int argc, char *argv[])
 
   // Tag on the reader type
   tag_on_reader.type = ti.nti.nai.btSak;
-  tag_on_reader.tag_basic.amb[0].mbm.btUnknown = ti.nti.nai.btSak;
+  tag_on_reader.tag_basic.amb[0].mbm.btSAK = ti.nti.nai.btSak;
 
   // No command line tag type specified, take it from the tag on the reader
   if (!bfOpts['M']) {
     tag_recover_verify.type = ti.nti.nai.btSak;
-    tag_recover_verify.tag_basic.amb[0].mbm.btUnknown = ti.nti.nai.btSak;
+    tag_recover_verify.tag_basic.amb[0].mbm.btSAK = ti.nti.nai.btSak;
   }
 
   // Tag on the reader UID

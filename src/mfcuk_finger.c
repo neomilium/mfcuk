@@ -55,7 +55,7 @@ int mfcuk_finger_default_decoder(mifare_classic_tag *dump)
   }
 
   printf("UID:\t%02x%02x%02x%02x\n", dump->amb[0].mbm.abtUID[0], dump->amb[0].mbm.abtUID[1], dump->amb[0].mbm.abtUID[2], dump->amb[0].mbm.abtUID[3]);
-  printf("TYPE:\t%02x\n", dump->amb[0].mbm.btUnknown);
+  printf("TYPE:\t%02x\n", dump->amb[0].mbm.btSAK);
 
   return 1;
 }
