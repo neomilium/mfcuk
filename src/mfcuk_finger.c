@@ -37,6 +37,7 @@
 */
 
 #include "mfcuk_finger.h"
+#include "nfc-utils.h"
 
 mfcuk_finger_tmpl_entry mfcuk_finger_db[] = {
   { "./data/tmpls_fingerprints/mfcuk_tmpl_skgt.mfd", "Sofia SKGT", mfcuk_finger_default_comparator, mfcuk_finger_skgt_decoder, NULL },
@@ -49,12 +50,12 @@ int mfcuk_finger_db_entries = sizeof(mfcuk_finger_db) / sizeof(mfcuk_finger_db[0
 int mfcuk_finger_default_decoder(mifare_classic_tag *dump)
 {
   if (!dump) {
-    fprintf(stderr, "ERROR: cannot decode a NULL pointer :)\n");
+    ERR("Cannot decode a NULL pointer");
     return 0;
   }
 
   printf("UID:\t%02x%02x%02x%02x\n", dump->amb[0].mbm.abtUID[0], dump->amb[0].mbm.abtUID[1], dump->amb[0].mbm.abtUID[2], dump->amb[0].mbm.abtUID[3]);
-  printf("TYPE:\t%02x\n", dump->amb[0].mbm.btUnknown);
+  printf("TYPE:\t%02x\n", dump->amb[0].mbm.btSAK);
 
   return 1;
 }
@@ -63,7 +64,7 @@ int mfcuk_finger_default_decoder(mifare_classic_tag *dump)
 int mfcuk_finger_skgt_decoder(mifare_classic_tag *dump)
 {
   if (!dump) {
-    fprintf(stderr, "ERROR: cannot decode a NULL pointer :)\n");
+    ERR("Cannot decode a NULL pointer");
     return 0;
   }
 
@@ -131,27 +132,27 @@ int mfcuk_finger_load(void)
     fp = fopen(mfcuk_finger_db[i].tmpl_filename, "rb");
 
     if (!fp) {
-      fprintf(stderr, "WARN: cannot open template file '%s'\n", mfcuk_finger_db[i].tmpl_filename);
+      WARN("Cannot open template file '%s'", mfcuk_finger_db[i].tmpl_filename);
       continue;
     }
 
     // If not read exactly 1 record, something is wrong
     if ((result = fread((void *)(&mask), sizeof(mask), 1, fp)) != 1) {
-      fprintf(stderr, "WARN: cannot read MASK from template file '%s'\n", mfcuk_finger_db[i].tmpl_filename);
+      WARN("Cannot read MASK from template file '%s'", mfcuk_finger_db[i].tmpl_filename);
       fclose(fp);
       continue;
     }
 
     // If not read exactly 1 record, something is wrong
     if ((result = fread((void *)(&values), sizeof(values), 1, fp)) != 1) {
-      fprintf(stderr, "WARN: cannot read VALUES template file '%s'\n", mfcuk_finger_db[i].tmpl_filename);
+      WARN("Cannot read VALUES template file '%s'", mfcuk_finger_db[i].tmpl_filename);
       fclose(fp);
       continue;
     }
 
     if (mfcuk_finger_db[i].tmpl_data == NULL) {
       if ((tmpl_new = (mfcuk_finger_template *) malloc(sizeof(mfcuk_finger_template))) == NULL) {
-        fprintf(stderr, "WARN: cannot allocate memory to template record %d\n", i);
+        WARN("Cannot allocate memory to template record %d", i);
         fclose(fp);
         continue;
       }

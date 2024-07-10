@@ -1,9 +1,15 @@
 /*-
- * Public platform independent Near Field Communication (NFC) library examples
+ * Free/Libre Near Field Communication (NFC) library
  *
- * Copyright (C) 2009 Roel Verdult
- * Copyright (C) 2010 Romain Tartière
- * Copyright (C) 2010, 2011 Romuald Conty
+ * Libnfc historical contributors:
+ * Copyright (C) 2009      Roel Verdult
+ * Copyright (C) 2009-2013 Romuald Conty
+ * Copyright (C) 2010-2012 Romain Tartière
+ * Copyright (C) 2010-2013 Philippe Teuwen
+ * Copyright (C) 2012-2013 Ludovic Rousseau
+ * See AUTHORS file for a more comprehensive list of contributors.
+ * Additional contributors of this file:
+ * Copyright (C) 2017-2018 Adam Laurie
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -67,10 +73,17 @@ struct mifare_param_value {
   uint8_t  abtValue[4];
 };
 
+struct mifare_param_trailer {
+  uint8_t  abtKeyA[6];
+  uint8_t  abtAccessBits[4];
+  uint8_t  abtKeyB[6];
+};
+
 typedef union {
   struct mifare_param_auth mpa;
   struct mifare_param_data mpd;
   struct mifare_param_value mpv;
+  struct mifare_param_trailer mpt;
 } mifare_param;
 
 // Reset struct alignment to default
@@ -83,11 +96,11 @@ bool    nfc_initiator_mifare_cmd(nfc_device *pnd, const mifare_cmd mc, const uin
 
 // MIFARE Classic
 typedef struct {
-  uint8_t  abtUID[4];
+  uint8_t  abtUID[4];  // beware for 7bytes UID it goes over next fields
   uint8_t  btBCC;
-  uint8_t  btUnknown;
+  uint8_t  btSAK;      // beware it's not always exactly SAK
   uint8_t  abtATQA[2];
-  uint8_t  abtUnknown[8];
+  uint8_t  abtManufacturer[8];
 } mifare_classic_block_manufacturer;
 
 typedef struct {
@@ -109,30 +122,6 @@ typedef union {
 typedef struct {
   mifare_classic_block amb[256];
 } mifare_classic_tag;
-
-// MIFARE Ultralight
-typedef struct {
-  uint8_t  sn0[3];
-  uint8_t  btBCC0;
-  uint8_t  sn1[4];
-  uint8_t  btBCC1;
-  uint8_t  internal;
-  uint8_t  lock[2];
-  uint8_t  otp[4];
-} mifareul_block_manufacturer;
-
-typedef struct {
-  uint8_t  abtData[16];
-} mifareul_block_data;
-
-typedef union {
-  mifareul_block_manufacturer mbm;
-  mifareul_block_data mbd;
-} mifareul_block;
-
-typedef struct {
-  mifareul_block amb[4];
-} mifareul_tag;
 
 // Reset struct alignment to default
 #  pragma pack()
