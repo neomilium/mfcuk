@@ -1570,14 +1570,14 @@ int main(int argc, char *argv[])
           ERR("tag was removed or cannot be selected");
         }
 
-        if (0 > nfc_initiator_mifare_cmd(pnd, k, block, &mp)) {
-          ERR("AUTH sector %d, block %d, key %012"PRIx64", key-type 0x%02x, error code 0x%02x", i, block, crntVerifKey, k, uiErrCode);
-        } else {
+        if (nfc_initiator_mifare_cmd(pnd, k, block, &mp)) {
           // Mark current key-type as verified
           ptr_trailer->abtAccessBits[result_byte] |= ACTIONS_VERIFY;
 
           // Copy default key on top of dump only in case default keys option was specified in command line and the default key matched
           memcpy((k == keyA) ? (ptr_trailer->abtKeyA) : (ptr_trailer->abtKeyB), current_default_keys[j], MIFARE_CLASSIC_KEY_BYTELENGTH);
+        } else {
+          ERR("AUTH sector %d, block %d, key %012"PRIx64", key-type 0x%02x, error code 0x%02x", i, block, crntVerifKey, k, uiErrCode);
         }
       } // for (j = 0; (j < crntNumVerifKeys); j++)
     } // for (i=0; i<max_sectors; i++)
